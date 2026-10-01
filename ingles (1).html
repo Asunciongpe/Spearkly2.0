@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Speakly · Aprende inglés a tu nivel</title>
+<style>
+:root{color-scheme:light;--bg:#f6efe4;--card:#fffdf8;--ink:#4a3d32;--mute:#8d7d6c;--brand:#8c6a4f;--brand2:#e2cdb0;--ok:#7f9f84;--bad:#c88c83;--line:#e9dcc9;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#fbf7f0,#f3e8d8) fixed;color:var(--ink);font:16px/1.5 "Trebuchet MS","Segoe UI",system-ui,sans-serif}
+#app{max-width:560px;margin:0 auto;padding:20px 16px 40px}
+h1{font:800 2.2rem/1.1 Georgia,"Times New Roman",serif;margin:8px 0 4px;letter-spacing:-.5px}
+h2{font-size:1.05rem;margin:22px 0 10px}
+h2.q{font:600 1.35rem/1.35 Georgia,serif;margin:18px 0 16px}
+.sub{color:var(--mute);margin:0 0 14px;font-size:.92rem}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--brand2);outline-offset:2px}
+.btn{display:block;width:100%;padding:14px;border-radius:14px;border:2px solid var(--brand);background:transparent;color:var(--brand);font-weight:700;margin:10px 0}
+.btn.main{background:var(--brand);color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lv{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left;display:flex;flex-direction:column}
+.lv b{font-size:1.3rem;color:var(--brand)}.lv span{font-size:.82rem;color:var(--mute)}
+.lv:hover{border-color:var(--brand)}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:13px 14px;margin:9px 0}
+.opt:hover:not(:disabled){border-color:var(--brand)}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 18%,var(--card))}
+.opt:disabled{cursor:default;opacity:1;color:var(--ink)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--brand2);transition:width .3s}
+.top{display:flex;align-items:center;gap:14px;margin-bottom:14px;font-weight:700}
+.chip{background:var(--brand);color:#fff;border-radius:9px;padding:2px 10px}
+.link{margin-left:auto;background:none;border:0;color:var(--mute);text-decoration:underline}
+.fb{background:var(--card);border-left:5px solid var(--brand2);border-radius:10px;padding:12px 14px;margin:14px 0}
+.ban{background:var(--brand2);color:#4a3d32;border-radius:12px;padding:10px 14px;font-weight:700;margin-bottom:12px}
+.big{font:800 4.5rem/1 Georgia,serif;color:var(--brand);margin:6px 0}
+.res{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;text-align:center;margin:14px 0}
+h1{font-weight:400;font-style:italic}
+.lv,.opt,.res,.fb{box-shadow:0 6px 20px rgba(140,106,79,.09)}
+.lv,.opt{border-radius:18px}.btn{border-radius:999px}
+.bar i{background:var(--brand)}
+.inp{display:block;width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;margin:4px 0 12px}
+a.btn{text-align:center;text-decoration:none}
+.note{background:#efe3d0;border-radius:14px;padding:12px 14px;font-size:.9rem;margin:6px 0 12px}
+.err{color:var(--bad);font-weight:700;min-height:1.4em;margin:0 0 6px}
+.sc{background:var(--card);border-radius:20px;padding:16px;box-shadow:0 6px 20px rgba(140,106,79,.09);margin:14px 0}
+.sc b.n{font:700 2rem/1 Georgia,serif;color:var(--brand)}
+.wk{display:flex;justify-content:space-between;margin-top:12px}
+.dy{width:14%;text-align:center;font-size:.75rem;color:var(--mute)}
+.dy i{display:grid;place-items:center;width:32px;height:32px;margin:4px auto 0;border-radius:50%;background:var(--line);font-style:normal}
+.dy.on i{background:var(--brand2)}.dy.t i{outline:2px solid var(--brand)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:0 0 12px;padding-bottom:4px}
+.tab{flex:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:.85rem}
+.tab.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.pass{background:var(--card);border-left:5px solid var(--brand2);border-radius:12px;padding:14px 16px;font:1.05rem/1.55 Georgia,serif;margin:10px 0}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const L=['A1','A2','B1','B2','C1','C2'];
+const D={A1:'Principiante',A2:'Elemental',B1:'Intermedio',B2:'Intermedio alto',C1:'Avanzado',C2:'Maestría'};
+const T={
+A1:[["She ___ a student.",["am","is","are"],1,"Con he/she/it usamos “is”."],["I have two ___.",["cat","cats","cates"],1,"Plural regular: cat → cats."]],
+A2:[["Yesterday I ___ to the cinema.",["go","went","gone"],1,"Pasado simple de “go” = went."],["She is ___ than her sister.",["tall","taller","tallest"],1,"Comparativo: tall → taller."]],
+B1:[["If it rains tomorrow, we ___ at home.",["stay","will stay","would stay"],1,"Primer condicional: if + presente, will + verbo."],["I've lived here ___ 2019.",["for","since","from"],1,"“Since” + punto de inicio; “for” + duración."]],
+B2:[["If I ___ more time, I would learn Chinese.",["have","had","would have"],1,"Segundo condicional: if + pasado, would + verbo."],["By next year, she ___ here for ten years.",["will work","will have worked","works"],1,"Futuro perfecto: will have + participio."]],
+C1:[["Not only ___ late, but he also forgot the documents.",["he was","was he","he is"],1,"Tras “Not only” al inicio, se invierte el orden."],["The proposal, ___ was widely criticised, was withdrawn.",["that","which","what"],1,"Oración de relativo no restrictiva: which."]],
+C2:[["Closest meaning to “ephemeral”:",["lasting a very short time","very large","hard to see"],0,"Ephemeral = efímero, dura muy poco."],["She managed to ___ the situation with tact.",["defuse","diffuse","defer"],0,"Defuse = desactivar una tensión."]]};
+const P={
+A1:[["What ___ your name?",["is","are","am"],0,"“What is…” para preguntar el nombre."],["They ___ from Spain.",["is","am","are"],2,"They + are."],["Opposite of “big”:",["small","tall","old"],0,"Big ↔ small."],["___ you like pizza?",["Do","Does","Is"],0,"Con “you” usamos Do en preguntas."],["My brother ___ in London.",["live","lives","living"],1,"He/she/it + verbo con -s."]],
+A2:[["I ___ watching TV when you called.",["was","were","am"],0,"Pasado continuo: was/were + -ing; con I → was."],["There isn't ___ milk in the fridge.",["some","any","a"],1,"En negativas usamos “any”."],["We're going to ___ dinner at 8.",["have","having","had"],0,"Going to + infinitivo."],["It's the ___ city in my country.",["big","bigger","biggest"],2,"Superlativo: the biggest."],["How ___ water do you drink?",["many","much","lot"],1,"Water es incontable → much."]],
+B1:[["She asked me where I ___.",["live","lived","lives"],1,"Estilo indirecto: el verbo retrocede al pasado."],["This bridge ___ in 1990.",["built","was built","is built"],1,"Pasiva en pasado: was + participio."],["You ___ wear a seatbelt. It's the law.",["must","might","can"],0,"Must = obligación."],["I'm not used to ___ up early.",["get","getting","got"],1,"Be used to + -ing."],["He's the man ___ car was stolen.",["who","whose","which"],1,"Whose indica posesión."]],
+B2:[["I wish I ___ harder at school.",["studied","had studied","would study"],1,"Arrepentimiento del pasado: wish + past perfect."],["He denied ___ the window.",["break","to break","breaking"],2,"Deny + -ing."],["Hardly ___ arrived when it started to rain.",["had we","we had","did we"],0,"Hardly al inicio exige inversión."],["She suggested ___ a taxi.",["to take","taking","take"],1,"Suggest + -ing."],["The meeting was ___ off due to the strike.",["called","put","taken"],0,"“Call off” = cancelar."]],
+C1:[["Had I known, I ___ differently.",["would act","would have acted","acted"],1,"Tercer condicional invertido."],["The new law comes into ___ next month.",["effect","force","action"],1,"“Come into force” = entrar en vigor."],["Closest to “ubiquitous”:",["rare","everywhere","ancient"],1,"Ubiquitous = omnipresente."],["It's high time you ___ a decision.",["make","made","will make"],1,"“It's high time” + pasado simple."],["He's under no ___ to accept.",["obligation","oblige","obliged"],0,"Under no obligation = sin obligación."]],
+C2:[["“His argument was specious” means it was…",["seemingly sound but wrong","brilliant","very long"],0,"Specious = engañoso, aparentemente válido."],["Were it not ___ your help, we would have failed.",["for","by","with"],0,"“Were it not for” = de no ser por."],["She spoke ___, choosing every word with care.",["circumspectly","circumspect","circumspection"],0,"Hace falta un adverbio."],["“To beat around the bush” means to…",["avoid the main point","hit a tree","walk in a garden"],0,"Andarse por las ramas."],["Such was his arrogance ___ nobody dared contradict him.",["that","which","as"],0,"Such… that = tal… que."]]};
+
+const R={
+A1:[["Tom is ten. He has a dog called Max. Max is white and very small.","What colour is Max?",["white","black","brown"],0],["I get up at seven. I eat bread and drink milk. Then I go to school by bus.","How does the writer go to school?",["by bus","on foot","by car"],0]],
+A2:[["Last Saturday Anna went shopping with her mother. They bought a red dress, but it was too expensive, so Anna paid with her birthday money.","Why did Anna use her birthday money?",["The dress was expensive","She forgot her wallet","Her mother was ill"],0],["The library opens at nine and closes at six, except on Sundays, when it is closed all day.","When can you NOT visit the library?",["On Sundays","On Saturdays","After five"],0]],
+B1:[["Many people think working from home is easier, but Laura disagrees. She gets distracted and misses talking to her colleagues, so she now works at the office three days a week.","Why does Laura go to the office?",["She misses colleagues and gets distracted at home","Her home is too small","Her boss requires it daily"],0],["Cycling to work has become popular. It is cheaper than the bus, it keeps you fit and it reduces traffic. However, some cyclists complain that the roads are not safe enough.","What is the main complaint?",["The roads are not safe enough","It is too expensive","It is too slow"],0]],
+B2:[["Although the new app promised to save users time, many reviewers found that its constant notifications had the opposite effect, interrupting their work and increasing stress.","What does the passage suggest?",["The app had an unintended negative effect","Everyone praised the app","The app has no notifications"],0],["Researchers have found that bilingual children tend to switch between tasks more easily, though the advantage seems small and not all studies agree.","What can we say about the findings?",["The advantage is modest and debated","They are completely proven","They apply only to adults"],0]],
+C1:[["Far from being a mere luxury, urban green spaces have been shown to mitigate heat, improve mental health and foster community ties, which is why planners increasingly regard them as essential infrastructure.","How do planners view green spaces?",["As essential infrastructure","As an unnecessary luxury","As a cause of heat"],0],["The minister's remarks, while ostensibly conciliatory, were widely read as a veiled warning to the opposition.","How were the remarks interpreted?",["As a hidden threat","As a sincere apology","As irrelevant"],0]],
+C2:[["The novelist's prose is deceptively spare: beneath its apparent simplicity lies a dense web of allusion that rewards, and indeed demands, repeated reading.","What is the writer's view of the prose?",["Simple on the surface but richly layered","Plain and shallow","Confusing and badly structured"],0],["That the policy ultimately failed was less a matter of flawed design than of implementation: it presupposed an administrative capacity that simply did not exist.","Why did the policy fail?",["The state lacked capacity to implement it","The design was flawed","Public opposition"],0]]};
+const Li={
+A1:[["My name is Sara and I am from Italy.","Where is Sara from?",["Italy","Spain","France"],0],["I have a brother and two sisters.","How many sisters does the speaker have?",["Two","One","Three"],0]],
+A2:[["The train to Madrid leaves at half past eight from platform four.","What time does the train leave?",["8:30","8:00","4:30"],0],["Could you open the window, please? It's very hot in here.","What does the speaker want?",["The window open","The door closed","A glass of water"],0]],
+B1:[["I'd like to book a table for four people on Friday at seven, please.","How many people is the booking for?",["Four","Seven","Five"],0],["The flight has been delayed by two hours because of bad weather.","Why is the flight late?",["Bad weather","A strike","A technical problem"],0]],
+B2:[["Despite the rain, the concert went ahead, although attendance was far lower than the organisers had hoped.","What happened to the concert?",["It took place with few people","It was cancelled","It was moved indoors"],0],["She would have joined us, but her train was cancelled at the last minute.","Why didn't she join?",["Her train was cancelled","She was ill","She forgot"],0]],
+C1:[["Notwithstanding the setbacks, the team is confident of delivering the project ahead of schedule.","What is the team's attitude?",["Confident despite setbacks","Worried about delays","Indifferent"],0],["The CEO stepped down amid allegations of financial misconduct, which she has consistently denied.","What does the CEO say about the allegations?",["She denies them","She admits them","She ignores them"],0]],
+C2:[["Her demeanour, at once impassive and faintly sardonic, gave nothing away.","How is her manner described?",["Expressionless yet mildly mocking","Warm and open","Nervous and agitated"],0],["Were it not for a few dissenting voices, the motion would have passed unnoticed.","Why did the motion get attention?",["A few people objected","It was widely publicised","It was rejected unanimously"],0]]};
+const W={
+A1:[["Yo tengo un perro.",["i have a dog"]],["Ella es mi hermana.",["she is my sister"]],["Me llamo Ana.",["{my name is|i am|i am called} ana"]],["Tengo diez años.",["i am ten( years old)","i have ten years"]],["Me gusta la pizza.",["i {like|love} pizza"]],["¿Cómo estás?",["how are you( doing)( today)"]]],
+A2:[["Ayer fui al parque.",["i went to the park yesterday","yesterday i went to the park"]],["¿Dónde está la estación?",["where is the( train| bus) station"]],["Voy a visitar a mis abuelos este fin de semana.",["i am {going to visit|visiting} my grandparents {this weekend|at the weekend|on the weekend}"]],["Ella es más alta que yo.",["she is taller than {me|i|i am}"]],["Quiero un vaso de agua, por favor.",["{i would like|i want|can i have|could i have} a glass of water( please)"]],["No tengo tiempo hoy.",["i do not have( any) time today","i have no time today","i have not got( any) time today"]]],
+B1:[["He vivido aquí desde 2019.",["i have lived here since 2019","since 2019 i have lived here"]],["Si llueve, nos quedaremos en casa.",["if it rains we will stay {at home|home}","we will stay {at home|home} if it rains"]],["Tengo que levantarme temprano mañana.",["{i have to|i must|i need to} {get up|wake up} early tomorrow","tomorrow i {have to|must|need to} {get up|wake up} early"]],["¿Podrías ayudarme con esto?",["{could|can|would} you {help me|give me a hand} with this"]],["Hace dos años que estudio inglés.",["i have been {studying|learning} english for two years","i have studied english for two years"]],["Me alegro de que hayas venido.",["i am {glad|happy|pleased}( that) you {came|have come|could come|are here}"]]],
+B2:[["Ojalá hubiera estudiado más.",["i wish i had studied {more|harder}","if only i had studied {more|harder}"]],["Sugirió ir en taxi.",["{he|she} suggested {taking a taxi|going by taxi|we take a taxi}"]],["Aunque estaba cansado, siguió trabajando.",["{although|though|even though} he was tired he {kept working|carried on working|continued working|continued to work}","he {kept working|carried on working|continued working|continued to work} {although|though|even though} he was tired","despite being tired he {kept working|carried on working|continued working|continued to work}"]],["Si hubiera llegado antes, habría visto el inicio.",["{if i had arrived earlier i would|had i arrived earlier i would} have seen the {start|beginning}"]],["Lo estoy deseando.",["i am looking forward to it","i can not wait( for it)"]],["Negó haberlo hecho.",["{he|she} denied {doing|having done} it"]]],
+C1:[["Si lo hubiera sabido, habría actuado de otra manera.",["{had i known|if i had known} i would have acted {differently|otherwise}","i would have acted {differently|otherwise} {had i known|if i had known}"]],["Ya es hora de que tomes una decisión.",["it is( high) time you made a decision"]],["Apenas había llegado yo cuando empezó a llover.",["hardly had {i|he|she|we|they} arrived when it {started|began} to rain","no sooner had {i|he|she|we|they} arrived than it {started|began} to rain"]],["No me queda otra opción que aceptar.",["i have no( other) {choice|option|alternative} but to accept","there is no( other) {choice|option|alternative} but to accept"]],["Es poco probable que lleguen a tiempo.",["they are unlikely to arrive {on time|in time}","it is unlikely that they {will arrive|arrive} {on time|in time}"]],["Lamento no haberte llamado antes.",["i regret not {calling|having called} you earlier","i am sorry {for not calling|for not having called|that i did not call} you {earlier|before}"]]],
+C2:[["De no ser por tu ayuda, habríamos fracasado.",["{were it not for|had it not been for|if it had not been for|without} your help we would have failed","we would have failed {without|if it had not been for|had it not been for} your help"]],["Tal era su arrogancia que nadie se atrevió a contradecirle.",["such was his arrogance that {nobody|no one} dared( to) contradict him"]],["Rara vez se ve tanta generosidad.",["rarely {do we|do you|does one|do people} see such generosity","such generosity is rarely seen"]],["Con independencia de lo que digan, seguiré adelante.",["{regardless of|irrespective of|no matter} what they say i will {go ahead|carry on|press on|keep going}"]],["Logró aliviar la situación con tacto.",["{he|she} managed to {defuse|ease|calm|smooth over} the situation with tact","{he|she} {defused|eased|calmed} the situation with tact"]],["No se puede subestimar la importancia de esto.",["the importance of this can not be {overstated|overemphasised|overemphasized}","one can not {overstate|overemphasise|overemphasize} the importance of this","we can not {underestimate|overstate} the importance of this"]]]};
+const MODES={gram:["Gramática","📘"],read:["Leer","📖"],write:["Escribir","✍️"],listen:["Escuchar","🎧"]};
+const BANK={gram:P,read:R,write:W,listen:Li};
+function say(t,r){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=r||.9;speechSynthesis.speak(u)}catch(e){}}
+let S={lvl:null,xp:0,streak:0,h:{},seen:{}};
+try{Object.assign(S,JSON.parse(localStorage.getItem('speakly')||'{}'))}catch(e){}
+const save=()=>{S.t=Date.now();try{localStorage.setItem('speakly',JSON.stringify(S))}catch(e){}push()};
+const $=document.getElementById('app');
+let test=null,cur=null,banner='';
+
+function shuf(q){const o=q[1].map((t,i)=>[t,i===q[2]]);for(let i=o.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[o[i],o[j]]=[o[j],o[i]]}return{q:q[0],o:o.map(x=>x[0]),c:o.findIndex(x=>x[1]),e:q[3]}}
+
+const MAIL='maria.vega2301@outlook.com';
+const H=s=>{let x=5381;for(const c of s)x=(x*33^c.charCodeAt(0))>>>0;return x.toString(36).toUpperCase().padStart(6,'0').slice(-6)};
+const code=(n,l)=>H(n.trim().toLowerCase()+'|'+l+'|speakly-mv');
+const g=id=>document.getElementById(id);
+const dk=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const ago=n=>{const d=new Date();d.setDate(d.getDate()-n);return dk(d)};
+const GOAL=50;
+const ADD={gram:{
+A1:[["This is ___ apple.",["a","an","the"],1,"Delante de vocal usamos “an”."],["I ___ breakfast at 8.",["has","have","having"],1,"Con I usamos have."],["Where ___ you from?",["is","are","am"],1,"You + are."]],
+A2:[["She ___ to school every day.",["go","goes","going"],1,"3ª persona: goes."],["I'm ___ than my brother.",["young","younger","youngest"],1,"Comparativo: younger."],["We ___ TV last night.",["watch","watched","watching"],1,"Pasado simple: watched."]],
+B1:[["I have ___ finished my homework.",["already","yet","ago"],0,"Already en afirmativas con present perfect."],["If I ___ rich, I'd travel the world.",["am","were","will be"],1,"Segundo condicional: if + were."],["She's looking forward ___ you.",["to see","to seeing","seeing"],1,"Look forward to + -ing."]],
+B2:[["I'd rather you ___ smoke here.",["don't","didn't","won't"],1,"Would rather + sujeto + pasado."],["She is said ___ a fortune.",["to have made","making","to make"],0,"Pasiva con infinitivo perfecto."],["___ the rain, we went out.",["Despite","Although","However"],0,"Despite + sustantivo."]],
+C1:[["He insisted that she ___ present.",["be","is","was"],0,"Subjuntivo tras insist that."],["Closest to “meticulous”:",["careless","very careful","quick"],1,"Meticulous = muy minucioso."],["She'll ___ at nothing to win.",["stop","stand","step"],0,"“Stop at nothing” = no detenerse ante nada."]],
+C2:[["Closest to “ostensibly”:",["apparently","secretly","absolutely"],0,"Ostensibly = aparentemente."],["“A double-edged sword” means something with…",["both benefits and drawbacks","two blades","no value"],0,"Ventajas y riesgos a la vez."],["He's a stickler ___ punctuality.",["for","of","to"],0,"Stickler for = muy estricto con."]]},
+read:{
+A1:[["Anna likes cats. She has two cats. They sleep on her bed.","Where do the cats sleep?",["on her bed","in the garden","in a box"],0]],
+A2:[["Ben usually has lunch at one o'clock, but today he is eating early because he has a dentist appointment at two.","Why is Ben eating early?",["He has a dentist appointment","He is very hungry","He is going to school"],0]],
+B1:[["The museum offers free entry on the first Sunday of each month. Tickets for the special exhibition, however, must be bought online in advance.","What must you do for the special exhibition?",["Buy a ticket online beforehand","Visit on Sunday","Pay at the door"],0]],
+B2:[["Having spent years in finance, Marta decided to open a bakery, arguing that long hours at a desk had left her unfulfilled.","Why did Marta change careers?",["Desk work left her unfulfilled","She needed more money","She was fired"],0]],
+C1:[["Critics contend that the reform, though well-intentioned, merely shifts the burden onto local authorities, who lack the resources to shoulder it.","What is the critics' main objection?",["Local authorities cannot afford the burden","The reform is badly intentioned","The reform costs too little"],0]],
+C2:[["For all its rhetorical flourish, the speech offered scant substance: it gestured at grand ambitions but committed to nothing concrete.","What is the verdict on the speech?",["Impressive style, little content","Rich in concrete proposals","Brief and plain"],0]]},
+listen:{
+A1:[["I like apples, but I don't like bananas.","What doesn't the speaker like?",["Bananas","Apples","Oranges"],0],["It's Monday and the weather is sunny.","What's the weather like?",["Sunny","Rainy","Cold"],0]],
+A2:[["The shop closes at six, so we have to hurry.","Why do they hurry?",["The shop is about to close","They are late for school","It is raining"],0],["My birthday is on the fifteenth of May.","When is the birthday?",["15 May","5 May","15 March"],0]],
+B1:[["I've been learning English for three years, and I'm taking an exam next month.","What is the speaker doing next month?",["Taking an exam","Moving abroad","Starting a course"],0],["Excuse me, could you tell me how to get to the station?","What is the speaker asking for?",["Directions","The time","A taxi"],0]],
+B2:[["Had I known about the traffic, I would have taken the train instead.","What did the speaker do?",["Didn't take the train","Took the train","Never travels"],0],["Unless prices come down, fewer people will be able to afford housing.","What is the speaker's concern?",["Housing may become unaffordable","Prices are falling","Few houses exist"],0]],
+C1:[["The committee, albeit reluctantly, approved the budget.","How did the committee approve it?",["Reluctantly","Enthusiastically","Unanimously"],0],["Rarely have I encountered such a compelling argument.","What does the speaker think of the argument?",["It is very convincing","It is boring","It is confusing"],0]],
+C2:[["His ostentatious generosity fooled few; most suspected an ulterior motive.","What did most people suspect?",["A hidden motive","Real kindness","Financial trouble"],0],["The proposal, while laudable in principle, is wholly unworkable in practice.","What is the speaker's view?",["Good idea, impractical","Excellent and feasible","Poorly motivated"],0]]}};
+for(const t in ADD)for(const l in ADD[t])BANK[t][l].push(...ADD[t][l]);
+const EX=[[/\bwon't\b/g,'will not'],[/\bcan't\b|\bcannot\b/g,'can not'],[/n't\b/g,' not'],[/'m\b/g,' am'],[/'re\b/g,' are'],[/'ll\b/g,' will'],[/'ve\b/g,' have'],[/\b(he|she|it|that|there|what|where|who|here)'s\b/g,'$1 is']];
+const nrm=x=>{x=x.toLowerCase().replace(/[’]/g,"'");for(const[a,b]of EX)x=x.replace(a,b);return x.replace(/[^a-z' ]/g,'').replace(/\s+/g,' ').trim()};
+const rx=p=>new RegExp('^'+p.replace(/\{([^}]*)\}/g,'(?:$1)').replace(/\(([^)?:][^)]*)\)/g,'(?:$1)?')+'$');
+const ex=p=>{p=p.replace(/\{([^}|]*)[^}]*\}/g,'$1').replace(/\([^)]*\)/g,'').replace(/\s+/g,' ').trim();return p[0].toUpperCase()+p.slice(1)+'.'};
+const hs=x=>{let h=2166136261;for(const c of x)h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0};
+function dayOrder(n,key){let a=[...Array(n).keys()],h=hs(ago(0)+key);const r=()=>{h=h+1831565813|0;let t=Math.imul(h^h>>>15,1|h);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};for(let i=n-1;i>0;i--){const j=r()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+function ds(){const a=S.days||[];let n=0,i=a.includes(ago(0))?0:1;while(a.includes(ago(i))){n++;i++}return n}
+const txp=()=>S.tx&&S.tx.d===ago(0)?S.tx.x:0;
+function streakCard(){const a=S.days||[],n=ds(),done=a.includes(ago(0));
+ const w=[6,5,4,3,2,1,0].map(i=>{const d=new Date();d.setDate(d.getDate()-i);const k=dk(d);return `<div class="dy ${a.includes(k)?'on':''} ${i?'':'t'}">${'DLMXJVS'[d.getDay()]}<i>${a.includes(k)?'🔥':''}</i></div>`}).join('');
+ const m=n===0?'Practica hoy para empezar tu racha.':done?'¡Meta de hoy cumplida! Vuelve mañana.':`Consigue ${GOAL} XP hoy para mantener tu racha.`;
+ return `<div class=sc><b class=n>🔥 ${n}</b> <span class=sub>${n===1?'día':'días'} de racha · mejor: ${Math.max(S.best||0,n)}</span><div class=wk>${w}</div><p class=sub style="margin:10px 0 0">${m}</p></div>`}
+
+function home(){const r=S.req;
+ $.innerHTML=`<h1>Speakly</h1><p class=sub>Aprende inglés a tu nivel y sube practicando, sin prisa.</p>${streakCard()}
+ ${r?`<button class="btn main" onclick="pend()">Solicitud ${r.l} en revisión</button>`:''}
+ ${S.lvl?`<button class="btn main" onclick="nextQ()">Continuar en ${S.lvl}</button>`:''}
+ <button class="btn ${S.lvl||r?'':'main'}" onclick="startTest()">Hacer el test de nivel (3 min)</button>
+ <h2>¿Tienes un certificado de inglés?</h2><p class=sub>Elige tu nivel y envíalo para que lo revisemos.</p>
+ <div class=grid>${L.map(l=>`<button class=lv onclick="ask('${l}')"><b>${l}</b><span>${D[l]}</span></button>`).join('')}</div>
+ <p class=sub id=cl style="margin-top:18px">${cloudMsg()}</p>`}
+function ask(l){
+ $.innerHTML=`<button class=link style="margin:0 0 8px" onclick="home()">← Volver</button><h1>Nivel ${l}</h1>
+ <p class=sub>Para empezar directamente en ${l} necesitamos un certificado que lo demuestre (Cambridge, IELTS, TOEFL, DELE, Duolingo English Test…). María lo revisa y te responde en menos de 2 días.</p>
+ <label class=sub for=nm>Tu nombre completo</label><input id=nm class=inp autocomplete=name>
+ <label class=sub for=em>Tu correo</label><input id=em class=inp type=email autocomplete=email>
+ <p class=err id=msg></p>
+ <button class="btn main" onclick="send('${l}')">Continuar</button>
+ <button class=btn onclick="startTest()">Prefiero hacer el test</button>`}
+function send(l){const n=g('nm').value.trim(),e=g('em').value.trim();
+ if(!n||!e){g('msg').textContent='Escribe tu nombre y tu correo.';return}
+ S.req={n,e,l,d:new Date().toLocaleDateString('es-ES')};save();pend()}
+function mail(r){const b=`Hola María,\n\nSolicito empezar en el nivel ${r.l} en Speakly.\nNombre: ${r.n}\nCorreo: ${r.e}\nFecha: ${r.d}\n\nAdjunto mi certificado.\n`;
+ return `mailto:${MAIL}?subject=${encodeURIComponent('Certificado nivel '+r.l+' - '+r.n)}&body=${encodeURIComponent(b)}`}
+function pend(){const r=S.req;
+ $.innerHTML=`<button class=link style="margin:0 0 8px" onclick="home()">← Inicio</button><h1>Solicitud ${r.l}</h1>
+ <div class=note><b>Paso 1.</b> Abre el correo, adjunta tu certificado y envíalo hoy.</div>
+ <a class="btn main" href="${mail(r)}" target="_blank" rel="noopener">Abrir mi correo con el mensaje listo</a>
+ <p class=sub>Si no se abre, escribe a <b>${MAIL}</b> con tu nombre (${r.n}), el nivel ${r.l} y el certificado adjunto.</p>
+ <div class=note><b>Paso 2.</b> María lo revisa y te responde en menos de 2 días. Si te aprueba, te enviará un código.</div>
+ <input id=cd class=inp placeholder="Código de aprobación" autocapitalize=characters>
+ <p class=err id=msg></p>
+ <button class="btn main" onclick="unlock()">Desbloquear nivel ${r.l}</button>
+ <button class=btn onclick="startTest()">Mientras tanto, hacer el test</button>
+ <button class=link style="margin:0" onclick="S.req=null;save();home()">Cancelar solicitud</button>`}
+function unlock(){const r=S.req;
+ if(g('cd').value.trim().toUpperCase()===code(r.n,r.l)){S.lvl=r.l;S.req=null;banner=`✅ Aprobado. Empiezas en ${r.l}.`;save();nextQ()}
+ else g('msg').textContent='Código incorrecto. Revisa la respuesta de María.'}
+function maria(){$.innerHTML=`<h1>Panel de María</h1><p class=sub>Para aprobar: escribe el nombre exacto que envió la persona y su nivel.</p>
+ <input id=an class=inp placeholder="Nombre completo"><select id=al class=inp>${L.map(l=>`<option>${l}</option>`).join('')}</select>
+ <button class="btn main" onclick="g('out').textContent=code(g('an').value,g('al').value)">Generar código</button>
+ <div class=res><div class=big style="font-size:2.4rem" id=out>······</div><p class=sub>Envíaselo por correo a la persona.</p></div>`}
+function startTest(){test={i:0,ok:{},items:L.flatMap(l=>T[l].map(q=>({l,...shuf(q)})))};rt()}
+function rt(){const t=test,x=t.items[t.i],n=t.items.length;
+ $.innerHTML=`<div class=bar><i style="width:${t.i/n*100}%"></i></div><p class=sub>Pregunta ${t.i+1} de ${n}</p>
+ <h2 class=q>${x.q}</h2>${x.o.map((o,k)=>`<button class=opt onclick="ta(${k})">${o}</button>`).join('')}`}
+function ta(k){const t=test,x=t.items[t.i];if(k===x.c)t.ok[x.l]=(t.ok[x.l]||0)+1;t.i++;t.i<t.items.length?rt():res()}
+function res(){let n=-1;for(let i=0;i<6;i++){if(test.ok[L[i]]>0)n=i;else break}
+ const l=L[Math.max(n,0)],tot=Object.values(test.ok).reduce((a,b)=>a+b,0);
+ S.lvl=l;save();banner='';
+ $.innerHTML=`<div class=res><p class=sub>Tu nivel es</p><div class=big>${l}</div><b>${D[l]}</b><p class=sub>${tot} de ${test.items.length} respuestas correctas</p></div>
+ <button class="btn main" onclick="nextQ()">Empezar a practicar en ${l}</button>
+ <button class=btn onclick="home()">Elegir otro nivel</button>`}
+
+function setMode(m){S.mode=m;save();banner='';nextQ()}
+function nextQ(){const l=S.lvl,m=S.mode||'mix',t=m==='mix'?Object.keys(BANK)[Math.random()*4|0]:m;
+ const bank=BANK[t][l],key=l+t;if(S.sd!==ago(0)){S.seen={};S.sd=ago(0)}let s=S.seen[key]||[];if(s.length>=bank.length)s=[];
+ const i=dayOrder(bank.length,key).find(x=>!s.includes(x));s.push(i);S.seen[key]=s;save();
+ const it=bank[i];
+ cur=t==='write'?{t,q:it[0],a:it[1],done:false}:t==='gram'?{t,...shuf(it),done:false}:{t,x:it[0],...shuf([it[1],it[2],it[3],'']),done:false};
+ rp()}
+function body(){const t=cur.t,tag=`<p class=sub>${MODES[t][1]} ${MODES[t][0]}</p>`;
+ if(t==='read')return tag+`<div class=pass>${cur.x}</div><h2 class=q>${cur.q}</h2>`;
+ if(t==='listen')return tag+`<div class=sc style="text-align:center"><button class="btn main" onclick="say(cur.x)">🔊 Reproducir audio</button><button class=btn onclick="say(cur.x,.6)">🐢 Más lento</button></div><h2 class=q>${cur.q}</h2>`;
+ if(t==='write')return tag+`<h2 class=q>Traduce al inglés: “${cur.q}”</h2><input id=wa class=inp ${cur.done?'disabled':''} value="${cur.v||''}" autocomplete=off autocapitalize=off><p class=err id=msg></p>${cur.done?'':'<button class="btn main" onclick="pw()">Comprobar</button>'}`;
+ return tag+`<h2 class=q>${cur.q}</h2>`}
+function pw(){const v=g('wa').value;if(!v.trim()){g('msg').textContent='Escribe tu respuesta.';return}cur.v=v;grade(cur.a.some(p=>rx(p).test(nrm(v))))}
+function rp(){
+ const h=(S.h[S.lvl]||[]),ac=h.length?Math.round(h.filter(Boolean).length/h.length*100):0;
+ $.innerHTML=`<div class=top><span class=chip>${S.lvl}</span><span>⭐ ${S.xp}</span><span>🔥 ${ds()}</span><span>✔ ${S.streak}</span><button class=link onclick="banner='';home()">Menú</button></div>
+ <div class=tabs>${['mix',...Object.keys(MODES)].map(m=>`<button class="tab ${(S.mode||'mix')===m?'on':''}" onclick="setMode('${m}')">${m==='mix'?'🔀 Mixto':MODES[m][1]+' '+MODES[m][0]}</button>`).join('')}</div>
+ ${banner?`<div class=ban>${banner}</div>`:''}
+ <p class=sub>Meta diaria: ${Math.min(txp(),GOAL)}/${GOAL} XP</p><div class=bar><i style="width:${Math.min(txp(),GOAL)/GOAL*100}%"></i></div>
+ <p class=sub style="margin-top:12px">Acierto reciente: ${ac}% (últimas ${h.length} de 10)</p><div class=bar><i style="width:${ac}%"></i></div>
+ ${body()}
+ ${(cur.o||[]).map((o,k)=>`<button class="opt ${cur.done?(k===cur.c?'ok':k===cur.p?'bad':''):''}" ${cur.done?'disabled':''} onclick="pa(${k})">${o}</button>`).join('')}
+ ${cur.done?`<div class=fb>${cur.ok?'✅ ¡Correcto! +10 XP':'❌ No era esa.'} ${cur.e||''}${cur.t==='listen'?`<br>📝 ${cur.x}`:''}${cur.t==='write'?`<br>Ejemplo: <b>${ex(cur.a[0])}</b>${cur.a[1]?`<br>Otra forma: <b>${ex(cur.a[1])}</b>`:''}<br><span class=sub>Hay varias formas válidas de decirlo.</span>`:''}</div><button class="btn main" onclick="banner='';nextQ()">Siguiente</button>`:''}`}
+function pa(k){cur.p=k;grade(k===cur.c)}
+function grade(ok){cur.done=true;cur.ok=ok;const l=S.lvl,i=L.indexOf(l);
+ let goalHit=false;
+ if(ok){S.xp+=10;S.streak++;const b=txp();S.tx={d:ago(0),x:b+10};if(b<GOAL&&b+10>=GOAL){S.days=(S.days||[]).concat(ago(0));goalHit=true;S.best=Math.max(S.best||0,ds())}}else S.streak=0;
+ const h=(S.h[l]||[]).concat(ok).slice(-10);S.h[l]=h;banner='';
+ if(h.length>=10){const sc=h.filter(Boolean).length;
+  if(sc>=8){S.h[l]=[];if(i<5){S.lvl=L[i+1];banner=`🎉 ¡Subes a ${S.lvl}! Has acertado ${sc} de 10.`}else banner='🏆 ¡Nivel máximo dominado!'}
+  else if(sc<=4&&i>0){S.h[l]=[];S.lvl=L[i-1];banner=`Bajamos a ${S.lvl} para reforzar la base. Volverás a subir.`}}
+ if(goalHit){const n=ds();banner=(banner?banner+' ':'')+`🔥 ¡Meta diaria cumplida! Racha de ${n} ${n===1?'día':'días'}.`}
+ save();rp()}
+let DOC=null,CL=0,tm=0;
+function push(){if(!DOC)return;clearTimeout(tm);tm=setTimeout(()=>DOC.set({j:JSON.stringify(S),t:Date.now()}).catch(()=>{CL=0;if(g('cl'))g('cl').textContent=cloudMsg()}),700)}
+const cloudMsg=()=>CL?'☁️ Tu progreso se guarda en tu cuenta y te sigue a cualquier dispositivo.':'💾 Tu progreso se guarda solo en este dispositivo. Entra con tu cuenta de Claude para guardarlo en la nube.';
+async function initCloud(){try{if(!window.claude||!claude.use)return;
+ const [db,u]=await Promise.all([claude.use('db'),claude.use('user')]);if(!db||!u)return;
+ const id=await u.id();if(!id)return;DOC=db.doc('data/users/'+id+'/profile');
+ const d=await DOC.get();
+ if(d.exists){try{const c=JSON.parse(d.data().j);if((c.t||0)>=(S.t||0)){S=Object.assign({lvl:null,xp:0,streak:0,h:{},seen:{}},c);try{localStorage.setItem('speakly',JSON.stringify(S))}catch(e){}}}catch(e){}}
+ CL=1;push();if(g('cl'))home()}catch(e){}}
+location.hash==='#maria'?maria():home();
+initCloud();
+</script>
+</body>
+</html>
